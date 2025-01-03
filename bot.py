@@ -1,4 +1,4 @@
-import os, re, sys, ccxt, time, threading
+import os, re, sys, ccxt, time, threading, asyncio
 from telethon import TelegramClient, events
 from flask import Flask
 from datetime import datetime, timedelta
@@ -27,7 +27,7 @@ async def start(event):
         time = (datetime.utcnow() + timedelta(hours=5, minutes=30)).strftime("**Date:** `%d %B %Y` \n**Time:** `%H:%M:%S` ")
         lp = f"**BTC Price:** `{str(n['last'])}` \n\n**Last Update:**\n"
         await k.edit(lp)
-        time.sleep(15)
+        asyncio.sleep(15)
 
 @client.on(events.NewMessage(pattern="/stop"))
 async def stop(event):
