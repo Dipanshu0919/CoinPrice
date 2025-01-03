@@ -19,26 +19,52 @@ def health_check():
 
 @client.on(events.NewMessage(pattern="/start"))
 async def start(event):
-    k = await event.reply("Showing BTC Price...")
     global run
+    print(ccxt.exchanges)
+    if run:
+        await event.reply("Pehle hi price dekhna chalu kia na stupid")
+        return
+    
+    run = True
+    k = await event.reply("`Showing BTC Price...`")
     ex = ccxt.bybit()
+
     while run:
-        n = ex.fetch_ticker("BTC/USDT")
-        time = (datetime.utcnow() + timedelta(hours=5, minutes=30)).strftime("**Date:** %d %B %Y \n**Time:** %H:%M:%S ")
-        price = float(n['last'])
-        mc = price * 19810000
-        lp = f"**BTC Price:** {price} \n**Market Cap:** {mc} \n\n**Last Update:** \n{time}"
-        await k.edit(lp)
-        await asyncio.sleep(15)
+        try:
+            n = ex.fetch_ticker("BTC/USDT")
+            print(n)
+        
+            time_str = (datetime.utcnow() + timedelta(hours=5, minutes=30)).strftime("**Date:** `%d %B %Y` \n**Time:** `%H:%M:%S` ")
+            price = float(n['last'])
+            mc = price * 19810000
+        
+            lp = f"**BTC Price:** `{price}` \n**Market Cap:** `{mc}` \n\n**Last Update:** \n{time_str}"
+            await k.edit(lp)
+            print(f"Updated message with price: {price} and market cap: {mc}")
+
+            await asyncio.sleep(15)
+        except ccxt.NetworkError as ne:
+            print(f"Network error: {ne}")
+            await k.edit("Network error occurred while fetching data.")
+            break
+        except ccxt.ExchangeError as ee:
+            print(f"Exchange error: {ee}")
+            await k.edit("Exchange error occurred while fetching data.")
+            break
+        except Exception as e:
+            print(f"General error: {e}")
+            await k.edit("Error occurred while fetching data.")
+            break
 
 @client.on(events.NewMessage(pattern="/stop"))
 async def stop(event):
     global run
     run = False
+    await event.reply("Price monitoring stopped.")
 
 def run_flask():
     app.run(host='0.0.0.0', port=8000)
-
+    
 flask_thread = threading.Thread(target=run_flask)
 flask_thread.daemon = True
 flask_thread.start()
