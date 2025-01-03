@@ -25,7 +25,7 @@ async def start(event):
     while run:
         n = ex.fetch_ticker("BTC/USDT")
         time = (datetime.utcnow() + timedelta(hours=5, minutes=30)).strftime("**Date:** `%d %B %Y` \n**Time:** `%H:%M:%S` ")
-        lp = f"**BTC Price:** `{str(n["last"])}` \n\n**Last Update:**\n"
+        lp = f"**BTC Price:** `{str(n['last'])}` \n\n**Last Update:**\n"
         await k.edit(lp)
         time.sleep(15)
 
