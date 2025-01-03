@@ -11,7 +11,7 @@ client = TelegramClient('bot', api_id, api_hash).start(bot_token=bot_token)
 async def start(event):
     ex = ccxt.coinmarketcap()
     while true:
-        n = ex.fetch_ticker("BTC/USDT)
+        n = ex.fetch_ticker("BTC/USDT")
         await event.reply(n["last"])
         time.sleep(15)
         
