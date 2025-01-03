@@ -7,13 +7,19 @@ bot_token = os.environ.get("BOT_TOKEN")
 
 client = TelegramClient('bot', api_id, api_hash).start(bot_token=bot_token)
 
-@client.on(events.NewMessage(pattern="start"))
+@client.on(events.NewMessage(pattern="/start"))
 async def start(event):
-    ex = ccxt.coinmarketcap()
-    while true:
+    run = True
+    ex = ccxt.mexc()
+    while run:
         n = ex.fetch_ticker("BTC/USDT")
         await event.reply(n["last"])
         time.sleep(15)
+
+@client.on(events.NewMessage(pattern="/stop"))
+async def start(event):
+    global run
+    run = False
         
 
 client.run_until_disconnected()
