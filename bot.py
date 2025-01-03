@@ -5,9 +5,9 @@ from datetime import datetime, timedelta
 
 api_id = 25895085
 api_hash = "4d83e959108956d7c0b05bd8f52f54b5"
-bot_token = "7800543249:AAE-aadHgRYAXb8kVEv9u70jERzI4At6ydA"
+bot_token = os.environ.get("BOT_TOKEN")
 
-client = TelegramClient('CoinPe_Bot', api_id, api_hash).start(bot_token=bot_token)
+client = TelegramClient('CoinPricee_Bot', api_id, api_hash).start(bot_token=bot_token)
 
 app = Flask(__name__)
 
