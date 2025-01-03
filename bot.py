@@ -5,9 +5,9 @@ from datetime import datetime, timedelta
 
 api_id = 25895085
 api_hash = "4d83e959108956d7c0b05bd8f52f54b5"
-bot_token = os.environ.get("BOT_TOKEN")
+bot_token = "7996280741:AAGuaV3WFDlssl5E91FyExlu9AUFimYLgJg"
 
-client = TelegramClient('bot', api_id, api_hash).start(bot_token=bot_token)
+client = TelegramClient('CoinPricee_Bot', api_id, api_hash).start(bot_token=bot_token)
 
 app = Flask(__name__)
 
@@ -25,9 +25,9 @@ async def start(event):
     while run:
         n = ex.fetch_ticker("BTC/USDT")
         time = (datetime.utcnow() + timedelta(hours=5, minutes=30)).strftime("**Date:** `%d %B %Y` \n**Time:** `%H:%M:%S` ")
-        lp = f"**BTC Price:** `{str(n['last'])}` \n\n**Last Update:**\n"
+        lp = f"**BTC Price:** `{str(n['last'])}` \n\n**Last Update:** \n{time}"
         await k.edit(lp)
-        asyncio.sleep(15)
+        await asyncio.sleep(15)
 
 @client.on(events.NewMessage(pattern="/stop"))
 async def stop(event):
