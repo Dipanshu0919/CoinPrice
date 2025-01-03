@@ -13,7 +13,8 @@ async def start(event):
     ex = ccxt.mexc()
     while run:
         n = ex.fetch_ticker("BTC/USDT")
-        await event.reply(n["last"])
+        lp = str(n["last"])
+        await event.reply(lp)
         time.sleep(15)
 
 @client.on(events.NewMessage(pattern="/stop"))
