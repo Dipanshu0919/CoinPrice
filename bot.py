@@ -28,6 +28,24 @@ async def start(event):
     print(f"{event.sender}\n\n")
     print(event.sender.id)
     print(event.sender.first_name)
+    coinsss = """
+    /render
+    /near
+    /sei
+    /vanar
+    /aptos
+    /orai
+    /prcl
+    /w
+    /flt
+    /pha
+    /jup
+    /tai
+    /naka
+    /btc
+    /dogs
+    /not"""
+    await message.reply(f"**COIN PRICE BOT**\n\n**Coins:** {coinsss}")
 
 @client.on(events.NewMessage)
 async def price(event):
@@ -41,7 +59,7 @@ async def price(event):
     if run and uuid==db["uid"] and db["start"]:
         await event.reply("Pehle hi price dekhna chalu kia na stupid /stop kr")
         return
-    k = await event.reply(f"**Showing** {coin} **Price...**")
+    k = await event.reply(f"**Showing** `{coin}` **Price...**")
     ex = ccxt.bitget()
     run = True
     db.update({"uid": event.sender.id, "start":True})
