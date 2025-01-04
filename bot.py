@@ -32,7 +32,7 @@ async def start(event):
 @client.on(events.NewMessage)
 async def price(event):
     global run
-    if event.text in ("/start" , "/stop"):
+    if event.text in ("/start" , "/stop", ".eval"):
         return
     
     sp = event.text.split("/") [1]
