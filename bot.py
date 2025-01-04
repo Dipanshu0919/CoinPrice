@@ -129,8 +129,13 @@ async def eval(event):
         await reply.edit(out)
 
 async def aexec(code, client, event):
-    exec("async def __aexec(client, event): " + "".join(f"\n {l_}" for l_ in code.split("\n")))
+    exec(
+        "async def __aexec(client, event): "
+        + "".join(f"\n {l_}" for l_ in code.split("\n"))
+    )
     return await locals()["__aexec"](client, event)
+
+
 
 def run_flask():
     app.run(host='0.0.0.0', port=8000)
