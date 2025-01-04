@@ -45,12 +45,12 @@ async def start(event):
     /btc
     /dogs
     /not"""
-    await message.reply(f"**COIN PRICE BOT**\n\n**Coins:** {coinsss}")
+    await event.reply(f"**COIN PRICE BOT**\n\n**Coins:** {coinsss}")
 
 @client.on(events.NewMessage)
 async def price(event):
     global run
-    if event.text in ("/start" , "/stop", ".eval"):
+    if event.text in ("/start" , "/stop", ".eval") or event.sender.bot:
         return
     
     sp = event.text.split("/") [1]
@@ -77,7 +77,7 @@ async def price(event):
 
             await asyncio.sleep(15)
         except Exception as e:
-            await k.edit("ERROR: {e}")
+            await k.edit(f"ERROR: {e}")
             run = False
             db.update({"uid": event.sender.id, "start":False})
 
@@ -122,15 +122,15 @@ async def eval(event):
     else:
         evaluation = "Success"
 
-    out = f"**Eval\n** `{cmd}`\n**Output**\n`{evaluation.strip()}`\n"
+    out = f"**Eval\n** `{cmd}`\n\n**Output**\n`{evaluation.strip()}`\n"
     if len(out) > 4000:
         await reply.reply(out)
     else:
         await reply.edit(out)
 
-async def aexec(code, client, message):
-    exec("async def __aexec(client, message): " + "".join(f"\n {l_}" for l_ in code.split("\n")))
-    return await locals()["__aexec"](client, message)
+async def aexec(code, client, event):
+    exec("async def __aexec(client, event): " + "".join(f"\n {l_}" for l_ in code.split("\n")))
+    return await locals()["__aexec"](client, event)
 
 def run_flask():
     app.run(host='0.0.0.0', port=8000)
