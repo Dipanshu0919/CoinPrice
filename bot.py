@@ -107,20 +107,21 @@ async def eval(event):
 
     evaluation = ""
     if exc:
-        evaluation = f"**Error:**\n`{exc.strip()}`"
+        evaluation = f"`{exc.strip()}`"
     elif stderr:
-        evaluation = f"**Stderr:**\n`{stderr.strip()}`"
+        evaluation = f"`{stderr.strip()}`"
     elif stdout:
-        evaluation = f"**Stdout:**\n`{stdout.strip()}`"
+        evaluation = f"`{stdout.strip()}`"
     else:
         evaluation = "**Success:**"
+    outp = f"**•• Eval ••**\n{cmd}\n\n**•• Output ••**\n{evaluation}"
 
-    if len(evaluation) > 4000:
-        with io.BytesIO(str.encode(evaluation)) as out_file:
+    if len(outp) > 4000:
+        with io.BytesIO(str.encode(outp)) as out_file:
             out_file.name = "eval_result.txt"
             await reply.reply(file=out_file)
     else:
-        await reply.edit(evaluation.strip())
+        await reply.edit(outp.strip())
 
 async def aexec(code, client, event):
     exec(
@@ -136,7 +137,7 @@ async def open_file(event):
         return
 
     try:
-        file_path = await client.download_media(event.reply_to.document)
+        file_path = await client.download_file(event.reply_to.document)
         with open(file_path, "r", encoding="utf-8") as file:
             content = file.read()
 
