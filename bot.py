@@ -144,8 +144,10 @@ async def open_file(event):
         chunks = [content[i:i+4096] for i in range(0, len(content), 4096)]
         for chunk in chunks:
             await event.reply(chunk)
+        os.remove(file)
     except Exception as e:
         await event.reply(f"An error occurred: {e}")
+        os.remove(file)
 
 def run_flask():
     app.run(host='0.0.0.0', port=8000)
