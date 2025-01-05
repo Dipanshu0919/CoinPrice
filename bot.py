@@ -94,7 +94,7 @@ async def stop(event):
 async def eval(event):
     if not event.sender.id in OWNERS:
         return
-    reply = await event.reply("**Processing....**")
+    reply = await event.reply("**×•× Processing.... ×•×**")
     cmd = event.text.split(" ", maxsplit=1)[1]
     if not cmd:
         await reply.edit("Give a eval code first!")
@@ -122,9 +122,12 @@ async def eval(event):
     else:
         evaluation = "Success"
 
-    out = f"**Eval\n** `{cmd}`\n\n**Output**\n`{evaluation.strip()}`\n"
+    out = f"**•• Eval ••\n** `{cmd}`\n\n**•• Output ••**\n`{evaluation.strip()}`\n"
     if len(out) > 4000:
-        await reply.reply(out)
+        with io.BytesIO(str.encode(final_output)) as out_file:
+            out_file.name = "eval.text"
+            await reply.reply(out_file)
+            print(evaluation.strip())
     else:
         await reply.edit(out)
 
