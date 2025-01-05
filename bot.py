@@ -132,6 +132,7 @@ async def aexec(code, client, event):
     )
     return await locals()["__aexec"](client, event)
 
+
 @client.on(events.NewMessage(pattern=".open"))
 async def open_file(event):
     if not event.reply_to:
@@ -139,17 +140,33 @@ async def open_file(event):
         return
 
     try:
-        file_path = await client.download_file(event.reply_to)
-        with open(file_path, "r", encoding="utf-8") as file:
-            content = file.read()
+        # Get the reply message containing the file
+        msg = await event.get_reply_message()
 
-        chunks = [content[i:i+4096] for i in range(0, len(content), 4096)]
-        for chunk in chunks:
-            await event.reply(chunk)
-        os.remove(file)
+        if not msg or not msg.media:
+            await event.reply("No file found in the replied message.")
+            return
+
+        # Check if the media is a document (file)
+        if isinstance(msg.media, MessageMediaDocument):
+            # Download the document (file)
+            file_path = await client.download_file(msg.media.document)
+
+            # Open and read the file content (if it's a text file)
+            with open(file_path, "r", encoding="utf-8") as file:
+                content = file.read()
+
+            # Break the content into chunks if it is too large
+            chunks = [content[i:i+4096] for i in range(0, len(content), 4096)]
+            for chunk in chunks:
+                await event.reply(chunk)
+
+            # Remove the downloaded file
+            os.remove(file_path)
+        else:
+            await event.reply("The replied message does not contain a document.")
     except Exception as e:
         await event.reply(f"An error occurred: {e}")
-        os.remove(file)
 
 def run_flask():
     app.run(host='0.0.0.0', port=8000)
