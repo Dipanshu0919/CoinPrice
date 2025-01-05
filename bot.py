@@ -139,7 +139,7 @@ async def open_file(event):
         return
 
     try:
-        file_path = await client.download_file(event.reply_to.document)
+        file_path = await client.download_file(event.reply_to)
         with open(file_path, "r", encoding="utf-8") as file:
             content = file.read()
 
