@@ -2,6 +2,7 @@ import os, re, sys, ccxt, time, threading, asyncio, random, logging, io, sys, tr
 from telethon import TelegramClient, events
 from datetime import datetime, timedelta
 from flask import Flask
+from telethon.tl.types import MessageMediaDocument
 
 api_id = 25895085
 api_hash = "4d83e959108956d7c0b05bd8f52f54b5"
@@ -116,7 +117,7 @@ async def eval(event):
         evaluation = f"`{stdout.strip()}`"
     else:
         evaluation = "**Success:**"
-    outp = f"**•• Eval ••**\n{cmd}\n\n**•• Output ••**\n{evaluation}"
+    outp = f"**•• Eval ••**\n`{cmd}`\n\n**•• Output ••**\n{evaluation}"
 
     if len(outp) > 4000:
         with io.BytesIO(str.encode(outp)) as out_file:
