@@ -45,8 +45,10 @@ async def price(event):
     global run
     if event.text in ("/start" , "/stop", ".eval") or event.sender.bot:
         return
-    
-    sp = event.text.split("/") [1]
+    if event.text.startswith("/"):
+        sp = event.text.split("/") [1]
+    else:
+        return
     coin = f"{sp.upper()}/USDT"
     uuid = event.sender.id
     if run and uuid == db["uid"] and db["start"]:
@@ -132,7 +134,7 @@ async def aexec(code, client, event):
 
 @client.on(events.NewMessage(pattern=".open"))
 async def open_file(event):
-    if not event.reply_to or not (await event.get_reply_message()).document:
+    if not event.reply_to:
         await event.reply("Please reply to a file!")
         return
 
