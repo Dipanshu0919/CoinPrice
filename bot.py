@@ -132,7 +132,7 @@ async def aexec(code, client, event):
 
 @client.on(events.NewMessage(pattern=".open"))
 async def open_file(event):
-    if not event.reply_to or not event.reply_to.document:
+    if not event.reply_to or not (await event.get_reply_message()).document:
         await event.reply("Please reply to a file!")
         return
 
