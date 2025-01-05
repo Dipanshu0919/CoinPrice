@@ -124,7 +124,7 @@ async def eval(event):
 
     out = f"**•• Eval ••\n** `{cmd}`\n\n**•• Output ••**\n`{evaluation.strip()}`\n"
     if len(out) > 4000:
-        with io.BytesIO(str.encode(final_output)) as out_file:
+        with io.BytesIO(str.encode(out)) as out_file:
             out_file.name = "eval.text"
             await reply.reply(out_file)
             print(evaluation.strip())
