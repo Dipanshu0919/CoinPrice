@@ -141,34 +141,30 @@ async def open_file(event):
         return
 
     try:
-        # Get the reply message containing the file
-        msg = await event.get_reply_message()
+        # Get the replied message
+        reply_message = await event.get_reply_message()
 
-        if not msg or not msg.media:
-            await event.reply("No file found in the replied message.")
-            return
+        # Check if the message contains media (a document)
+        if reply_message.media:
+            # Download the file
+            file_path = await client.download_media(reply_message.media)
 
-        # Check if the media is a document (file)
-        if isinstance(msg.media, MessageMediaDocument):
-            # Download the document (file)
-            file_path = await client.download_file(msg.media.document)
-
-            # Open and read the file content (if it's a text file)
+            # Open and read the downloaded file
             with open(file_path, "r", encoding="utf-8") as file:
                 content = file.read()
 
-            # Break the content into chunks if it is too large
+            # Split the content into chunks if it's too large
             chunks = [content[i:i+4096] for i in range(0, len(content), 4096)]
             for chunk in chunks:
                 await event.reply(chunk)
 
-            # Remove the downloaded file
+            # Optionally remove the file after reading it
             os.remove(file_path)
         else:
-            await event.reply("The replied message does not contain a document.")
+            await event.reply("No document found in the replied message.")
     except Exception as e:
         await event.reply(f"An error occurred: {e}")
-
+        
 def run_flask():
     app.run(host='0.0.0.0', port=8000)
 
