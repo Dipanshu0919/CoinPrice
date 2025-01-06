@@ -13,5 +13,8 @@ COPY . .
 # Install dependencies
 RUN pip install -r requirements.txt
 
+# List files to confirm the working directory
+RUN ls -la /app
+
 # Set the default command
 CMD ["python3", "bot.py"]
