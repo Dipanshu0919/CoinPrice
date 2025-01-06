@@ -1,1 +1,1 @@
-web: bash setup.sh
+web: python3 bot.py
