@@ -1,1 +1,1 @@
-web: apt-get update && apt-get install -y ffmpeg && python3 bot.py
+web: python3 bot.py
