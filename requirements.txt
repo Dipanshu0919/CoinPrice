@@ -2,4 +2,4 @@ telethon
 ccxt
 flask
 yt-dlp
-ffmpeg
+ffmpeg-python
