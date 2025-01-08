@@ -3,3 +3,4 @@ ccxt
 flask
 yt-dlp
 ffmpeg-python
+dapro
