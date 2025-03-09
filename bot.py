@@ -85,11 +85,10 @@ async def eval(event):
     if not event.sender.id in OWNERS:
         return
     reply = await event.reply("**×•× Processing.... ×•×**")
-    cmd = event.text.split(" ", maxsplit=1)[1]
-    if not cmd:
+    if not event.text.split(" ", maxsplit=1)[1]:
         await reply.edit("Provide some code to evaluate.")
-        return
-
+        return  
+    cmd = event.text.split(" ", maxsplit=1)[1]
     old_stderr = sys.stderr
     old_stdout = sys.stdout
     redirected_output = sys.stdout = io.StringIO()
